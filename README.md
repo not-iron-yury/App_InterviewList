@@ -1,1 +1,1 @@
-# Vue 3 + TypeScript + Vite + Router + Pinia
+# Vue 3 + TypeScript + Router + Pinia + PrimeVue
