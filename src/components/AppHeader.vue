@@ -4,6 +4,7 @@ import { useUserStore } from '../stores/user';
 import type { ComputedRef } from 'vue';
 
 const userStore = useUserStore();
+// const showLinks = computed((): boolean => !!userStore.userId); // ???
 
 interface IMenuItem {
   label: string;
@@ -22,7 +23,7 @@ const items = ref<IMenuItem[]>([
   {
     label: 'Список задач',
     icon: 'pi pi-list',
-    path: '/list',
+    path: '/tasks',
     show: computed((): boolean => !!userStore.userId),
   },
   {
