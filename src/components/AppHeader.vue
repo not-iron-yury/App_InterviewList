@@ -1,31 +1,36 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
+import { useUserStore } from '../stores/user';
+import type { ComputedRef } from 'vue';
 
-const items = ref([
-  {
-    label: 'Авторизация',
-    icon: 'pi pi-user',
-    path: '/auth',
-  },
+const userStore = useUserStore();
+
+interface IMenuItem {
+  label: string;
+  icon: string;
+  path: string;
+  show: ComputedRef<boolean>;
+}
+
+const items = ref<IMenuItem[]>([
   {
     label: 'Добавить',
     icon: 'pi pi-plus',
     path: '/',
+    show: computed((): boolean => !!userStore.userId),
   },
   {
     label: 'Список задач',
     icon: 'pi pi-list',
     path: '/list',
+    show: computed((): boolean => !!userStore.userId),
   },
   {
     label: 'Статистика',
     icon: 'pi pi-chart-pie',
     path: '/stat',
+    show: computed((): boolean => !!userStore.userId),
   },
-  // {
-  //   label: 'Выход',
-  //   icon: 'pi pi-angle-right',
-  // },
 ]);
 </script>
 
@@ -33,9 +38,21 @@ const items = ref([
   <header class="header">
     <menu-bar :model="items" class="menu">
       <template #item="{ item, props }">
-        <router-link :to="item.path" class="menu__link" v-bind="props.action">
-          <span :class="item.icon" class="p-menuitem-icon"></span>
-          <span class="ml-2">{{ item.label }}</span>
+        <template v-if="item.show">
+          <router-link :to="item.path" class="menu__link" v-bind="props.action">
+            <span :class="item.icon" class="p-menuitem-icon" />
+            <span class="ml-2">{{ item.label }}</span>
+          </router-link>
+        </template>
+      </template>
+      <template #end>
+        <div class="menu__link menu__link--end menu-exit" v-if="userStore.userId" @click="userStore.userId = ''">
+          <span class="pi pi-angle-right p-menuitem-icon" />
+          <span class="ml-2">Выход</span>
+        </div>
+        <router-link to="/auth" class="menu__link menu__link--end p-menubar-item-link" v-else>
+          <span class="pi pi-user p-menuitem-icon" />
+          <span class="ml-2">Авторизация</span>
         </router-link>
       </template>
     </menu-bar>
@@ -49,6 +66,9 @@ const items = ref([
 .menu__link {
   display: flex;
   align-items: center;
+}
+.menu__link--end {
+  padding: 8px 12px;
 }
 .menu-exit {
   cursor: pointer;
