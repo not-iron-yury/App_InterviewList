@@ -37,7 +37,7 @@ const items = ref<IMenuItem[]>([
 
 <template>
   <header class="header">
-    <menu-bar :model="items" class="menu">
+    <app-menu-bar :model="items" class="menu">
       <template #item="{ item, props }">
         <template v-if="item.show">
           <router-link :to="item.path" class="menu__link" v-bind="props.action">
@@ -56,7 +56,7 @@ const items = ref<IMenuItem[]>([
           <span class="ml-2">Авторизация</span>
         </router-link>
       </template>
-    </menu-bar>
+    </app-menu-bar>
   </header>
 </template>
 

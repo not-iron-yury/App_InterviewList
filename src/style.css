@@ -7,139 +7,9 @@
   vertical-align: baseline;
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+:root {
+  --color-link: #059669;
 }
-
-a,
-a:link,
-a:visited {
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: none;
-}
-/*
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-menu,
-nav,
-section {
-  display: block;
-}
-
-img,
-picture {
-  display: block;
-  max-width: 100%;
-  height: auto;
-}
-
-ol,
-ul {
-  list-style: none;
-}
-
-q,
-blockquote {
-  quotes: none;
-}
-
-q:before,
-q:after,
-blockquote:before,
-blockquote:after {
-  content: '';
-  content: none;
-}
-
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-}
-
-address {
-  font-style: normal;
-} */
-
-/* Form */
-/* input,
-textarea,
-button,
-select {
-  font-family: inherit;
-  font-size: inherit;
-  color: inherit;
-  background-color: transparent;
-}
-
-input::-ms-clear {
-  display: none;
-} */
-
-/* button, */
-/* input[type='button'], */
-/* input[type='submit'] { */
-/* display: inline-block; */
-/* border: none; */
-/* background: none; */
-/* padding: 0; */
-/* margin: 0; */
-/* font: inherit; */
-/* color: inherit; */
-/* cursor: pointer; */
-/* } */
-
-/* input:focus, */
-/* button:focus, */
-/* input:active, */
-/* button:active { */
-/* outline: none; */
-/* box-shadow: 0 0 3px 0 rgb(0, 0, 255); */
-/* } */
-/*
-button::-moz-focus-inner {
-  padding: 0;
-  border: 0;
-}
-
-label {
-  cursor: pointer;
-}
-legend {
-  display: block;
-}
-.fieldset {
-  margin: 0;
-  padding: 0;
-  min-width: 0;
-  border: none;
-} */
-/*-----------------------------------------*/
-/* :root {
-  --primary: #6979f8;
-  --primary-hover: #a5affb;
-  --second: #be52f2;
-  --second-hover: #dba5f5;
-  --success: #00c48c;
-  --success-hover: #7ddfc3;
-  --info: #0084f4;
-  --info-hover: #66b5f8;
-  --warning: #ffa26b;
-  --warning-hover: #ffc7a6;
-  --danger: #ff647c;
-  --danger-hover: #fdafb
-}
-*/
 
 body {
   display: flex;
@@ -148,13 +18,9 @@ body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
-
-  /* background-color: white; */
-  /* color: #292929; */
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   font-weight: 400;
   font-size: 18px;
-
   text-wrap: balance;
   scroll-behavior: smooth;
 }
