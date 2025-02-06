@@ -23,13 +23,13 @@ const routs: RouteRecordRaw[] = [
     beforeEnter: checkAuth,
   },
   {
-    path: '/tasks',
-    name: 'Tasks',
+    path: '/list',
+    name: 'List',
     component: () => import('../views/PageTaskList.vue'),
     beforeEnter: checkAuth,
   },
   {
-    path: '/task/:id',
+    path: '/list/:id',
     name: 'SingleTask',
     component: () => import('../views/PageTask.vue'),
     beforeEnter: checkAuth,

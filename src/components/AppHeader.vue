@@ -26,7 +26,7 @@ const items = ref<IMenuItem[]>([
   {
     label: 'Список задач',
     icon: 'pi pi-list',
-    path: '/tasks',
+    path: '/list',
     show: computed((): boolean => !!userStore.userId),
   },
   {
