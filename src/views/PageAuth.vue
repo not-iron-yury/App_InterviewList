@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, computed, reactive } from 'vue';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { ref, computed, reactive, onMounted } from 'vue';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 import { useRouter } from 'vue-router';
 import { useToast } from 'primevue/usetoast';
 
@@ -53,6 +53,14 @@ const auth = async (): Promise<void> => {
     }
   }
 };
+
+onMounted(() => {
+  onAuthStateChanged(getAuth(), user => {
+    if (user) {
+      router.push('/');
+    }
+  });
+});
 </script>
 
 <template>

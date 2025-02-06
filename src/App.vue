@@ -11,7 +11,6 @@ const isLoading = ref<boolean>(true);
 onMounted(() => {
   onAuthStateChanged(getAuth(), user => {
     if (user) {
-      console.log(user);
       userStore.userId = user.uid;
     } else {
       userStore.userId = '';
@@ -22,7 +21,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="container">
+  <app-spiner v-if="isLoading" class="spiner" />
+  <div class="container" v-else>
     <app-header />
     <RouterView />
   </div>
@@ -34,5 +34,10 @@ onMounted(() => {
   padding: 0 15px;
   max-width: 1230px; /* 1200px*/
   width: 100%;
+}
+.spiner {
+  display: flex;
+  place-items: center;
+  height: 100vh;
 }
 </style>

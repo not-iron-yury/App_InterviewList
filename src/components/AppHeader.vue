@@ -2,7 +2,10 @@
 import { computed, ref } from 'vue';
 import { useUserStore } from '../stores/user';
 import type { ComputedRef } from 'vue';
+import { getAuth, signOut } from 'firebase/auth';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const userStore = useUserStore();
 // const showLinks = computed((): boolean => !!userStore.userId); // ???
 
@@ -33,6 +36,11 @@ const items = ref<IMenuItem[]>([
     show: computed((): boolean => !!userStore.userId),
   },
 ]);
+
+const signOutHandler = async (): Promise<void> => {
+  await signOut(getAuth());
+  router.push('/auth');
+};
 </script>
 
 <template>
@@ -47,7 +55,7 @@ const items = ref<IMenuItem[]>([
         </template>
       </template>
       <template #end>
-        <div class="menu__link menu__link--end menu-exit" v-if="userStore.userId" @click="userStore.userId = ''">
+        <div class="menu__link menu__link--end menu-exit" v-if="userStore.userId" @click="signOutHandler">
           <span class="pi pi-angle-right p-menuitem-icon" />
           <span class="ml-2">Выход</span>
         </div>
