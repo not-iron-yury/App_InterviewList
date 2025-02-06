@@ -1,6 +1,24 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router';
 import AppHeader from './components/AppHeader.vue';
+import { ref, onMounted } from 'vue';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { useUserStore } from './stores/user';
+
+const userStore = useUserStore();
+const isLoading = ref<boolean>(true);
+
+onMounted(() => {
+  onAuthStateChanged(getAuth(), user => {
+    if (user) {
+      console.log(user);
+      userStore.userId = user.uid;
+    } else {
+      userStore.userId = '';
+    }
+    isLoading.value = false;
+  });
+});
 </script>
 
 <template>

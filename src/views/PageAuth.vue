@@ -35,29 +35,28 @@ const toggleAuth = (): void => {
 };
 
 const submitForm = (): void => {
-  signUp();
-  userData.email = '';
-  userData.password = '';
+  auth();
 };
 
-const signUp = async (): Promise<void> => {
-  isLogin.value = true;
+const auth = async (): Promise<void> => {
   try {
-    await createUserWithEmailAndPassword(getAuth(), userData.email, userData.password);
+    if (isLogin.value) {
+      await signInWithEmailAndPassword(getAuth(), userData.email, userData.password);
+    } else {
+      await createUserWithEmailAndPassword(getAuth(), userData.email, userData.password);
+    }
     router.push('/');
   } catch (error: unknown) {
     if (error instanceof Error) {
       toast.add({ severity: 'error', summary: 'Ошибочка', detail: error.message, life: 4000 });
       console.log(error.message);
     }
-  } finally {
-    isLogin.value = false;
   }
 };
 </script>
 
 <template>
-  <app-toast position="bottom-right" />
+  <app-toast position="top-right" />
   <section class="auth">
     <div class="auth-card">
       <div class="auth-card__content">
@@ -81,7 +80,6 @@ const signUp = async (): Promise<void> => {
           type="submit"
           icon="pi pi-user"
           :loading="isLoading"
-          :disabled="isLoading"
           class="w-full"
         ></app-button>
       </form>
