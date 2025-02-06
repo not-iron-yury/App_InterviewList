@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { getFirestore, setDoc, doc } from 'firebase/firestore';
+import { useUserStore } from './../stores/user';
 import type { IInterview } from './../Interfaces';
+
+const DB = getFirestore();
+const router = useRouter();
 
 const company = ref<string>('');
 const vacancyLink = ref<string>('');
@@ -14,18 +20,32 @@ const disabledSaveButton = computed<boolean>(() => {
   return !(company.value && vacancyLink.value && hrName.value);
 });
 
-const addNewInterview = () => {
-  const payload: IInterview = {
-    id: Date.now(),
-    company: company.value,
-    vacancyLink: vacancyLink.value,
-    hrName: hrName.value,
-    contactTelegram: contactTelegram.value,
-    contactEmail: contactEmail.value,
-    contactPhone: contactPhone.value,
-    dateCreation: new Date(),
-  };
-  console.log(payload);
+const addNewInterview = async (): Promise<void> => {
+  try {
+    loading.value = true;
+
+    const userId = useUserStore().userId;
+
+    const payload: IInterview = {
+      id: String(Date.now()),
+      company: company.value,
+      vacancyLink: vacancyLink.value,
+      hrName: hrName.value,
+      contactTelegram: contactTelegram.value,
+      contactEmail: contactEmail.value,
+      contactPhone: contactPhone.value,
+      dateCreation: new Date(),
+    };
+
+    if (userId) {
+      await setDoc(doc(DB, `users/${userId}/interviews`, payload.id), payload);
+    }
+    router.push('/list');
+  } catch (err) {
+    console.error(err);
+  } finally {
+    loading.value = false;
+  }
 };
 </script>
 
