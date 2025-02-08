@@ -16,7 +16,7 @@ const components = [
   { name: 'app-toast', component: Toast },
   { name: 'app-spiner', component: ProgressSpinner },
   { name: 'app-card', component: Card },
-  { name: 'app-datatable', component: DataTable },
+  { name: 'app-data-table', component: DataTable },
   { name: 'app-column', component: Column },
   { name: 'app-dialog', component: ConfirmDialog },
   { name: 'app-message', component: Message },
