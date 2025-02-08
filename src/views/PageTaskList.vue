@@ -4,7 +4,9 @@ import { getFirestore, query, collection, orderBy, getDocs, deleteDoc, doc } fro
 import { useUserStore } from './../stores/user';
 import type { IInterview } from './../Interfaces';
 import { useRouter } from 'vue-router';
+import { useConfirm } from 'primevue/useconfirm';
 
+const confirm = useConfirm();
 const router = useRouter();
 const DB = getFirestore();
 const userId = useUserStore().userId;
@@ -23,7 +25,29 @@ onMounted(async () => {
   isLoading.value = false;
 });
 
-const confirmRemoveInterview = (id: string): Promise<void> => {};
+const confirmRemoveInterview = async (id: string): Promise<void> => {
+  confirm.require({
+    header: 'Квесчен',
+    message: 'Саня ты в порядке?',
+    acceptLabel: 'Да',
+    acceptClass: 'p-button-danger',
+    acceptIcon: 'pi pi-thumbs-up',
+    accept: async () => {
+      try {
+        isLoading.value = true;
+        await deleteDoc(doc(DB, `users/${userId}/interviews`, id));
+        interviews.value = await getAllInterviews();
+      } catch (err) {
+        console.error(err);
+      } finally {
+        isLoading.value = false;
+      }
+    },
+    rejectLabel: 'Нет',
+    rejectClass: 'p-button-secondary',
+    rejectIcon: 'pi pi-thumbs-down',
+  });
+};
 
 const editingInterview = (id: string): void => {
   router.push(`/interview/${id}`);

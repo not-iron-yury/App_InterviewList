@@ -11,6 +11,7 @@ import Aura from '@primevue/themes/aura';
 import components from './primeComponents.ts';
 import 'primeicons/primeicons.css';
 import ToastService from 'primevue/toastservice';
+import ConfirmationService from 'primevue/confirmationservice';
 
 import { initializeApp } from 'firebase/app';
 
@@ -35,6 +36,7 @@ app.use(PrimeVue, {
     preset: Aura,
   },
 });
+app.use(ConfirmationService);
 app.use(ToastService);
 app.use(router);
 app.use(createPinia());
