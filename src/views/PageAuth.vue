@@ -83,13 +83,7 @@ onMounted(() => {
           Пароль
           <app-input-text v-model="userData.password" type="password" class="auth-form__input" required />
         </label>
-        <app-button
-          :label="submitButtonText"
-          type="submit"
-          icon="pi pi-user"
-          :loading="isLoading"
-          class="w-full"
-        ></app-button>
+        <app-button :label="submitButtonText" type="submit" icon="pi pi-user" :loading="isLoading"></app-button>
       </form>
     </div>
   </section>
@@ -132,8 +126,6 @@ onMounted(() => {
   cursor: pointer;
 }
 
-.auth-form {
-}
 .auth-form__label {
   display: grid;
   gap: 5px;

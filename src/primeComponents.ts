@@ -8,6 +8,10 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import ConfirmDialog from 'primevue/confirmdialog';
 import Message from 'primevue/message';
+import InputNumber from 'primevue/inputnumber';
+import Textarea from 'primevue/textarea';
+import DatePicker from 'primevue/datepicker';
+import RadioButton from 'primevue/radiobutton';
 
 const components = [
   { name: 'app-button', component: Button },
@@ -20,6 +24,10 @@ const components = [
   { name: 'app-column', component: Column },
   { name: 'app-dialog', component: ConfirmDialog },
   { name: 'app-message', component: Message },
+  { name: 'app-input-number', component: InputNumber },
+  { name: 'app-textarea', component: Textarea },
+  { name: 'app-datepicker', component: DatePicker },
+  { name: 'app-radio', component: RadioButton },
 ];
 
 export default components;

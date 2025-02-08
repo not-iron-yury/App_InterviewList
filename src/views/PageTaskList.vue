@@ -50,7 +50,7 @@ const confirmRemoveInterview = async (id: string): Promise<void> => {
 };
 
 const editingInterview = (id: string): void => {
-  router.push(`/interview/${id}`);
+  router.push(`/list/${id}`);
 };
 </script>
 
@@ -80,7 +80,7 @@ const editingInterview = (id: string): void => {
             </a>
             <a
               v-if="slotProps.data.contactEmail"
-              :href="`https://wa.me/${slotProps.data.contactEmail}`"
+              :href="`mailto:${slotProps.data.contactEmail}`"
               target="_blank"
               class="contacts__email"
             >

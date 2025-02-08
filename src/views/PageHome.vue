@@ -58,27 +58,27 @@ const addNewInterview = async (): Promise<void> => {
       <template #content>
         <label class="form-label">
           Компания
-          <app-input-text class="form-input" v-model="company" />
+          <app-input-text class="form-input" type="text" v-model="company" />
         </label>
         <label class="form-label">
           Описание вакансии (ссылка)
-          <app-input-text class="form-input" v-model="vacancyLink" />
+          <app-input-text class="form-input" type="text" v-model="vacancyLink" />
         </label>
         <label class="form-label">
           Контакт (имя)
-          <app-input-text class="form-input" v-model="hrName" />
+          <app-input-text class="form-input" type="text" v-model="hrName" />
         </label>
         <label class="form-label">
           Telegram HR
-          <app-input-text class="form-input" v-model="contactTelegram" />
+          <app-input-text class="form-input" type="text" v-model="contactTelegram" />
         </label>
         <label class="form-label">
           Email HR
-          <app-input-text class="form-input" v-model="contactEmail" />
+          <app-input-text class="form-input" type="email" v-model="contactEmail" />
         </label>
         <label class="form-label">
           Телефон HR
-          <app-input-text class="form-input" v-model="contactPhone" />
+          <app-input-text class="form-input" type="tel" v-model="contactPhone" />
         </label>
         <app-button
           class="form-btn"
