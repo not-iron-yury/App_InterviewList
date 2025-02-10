@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router';
 import { useUserStore } from '../stores/user';
 import { getFirestore, getDoc, doc, updateDoc } from 'firebase/firestore';
 import type { IInterview } from '../Interfaces';
+import dayjs from 'dayjs';
 
 const DB = getFirestore();
 const userStore = useUserStore();
@@ -29,6 +30,7 @@ const getData = async (): Promise<void> => {
 const addStage = (): void => {
   if (interview.value) {
     interview.value.stages.push({ name: '', descr: '', date: formatDate(new Date()) });
+    // interview.value.stages.push({ name: '', descr: '', date: dayjs(new Date()).format('MM.DD.YYYY') });
   }
 };
 
@@ -46,11 +48,12 @@ const saveData = async (): Promise<void> => {
     console.error(err);
   } finally {
     await getData();
-    isLoading.value = false;
   }
 };
 
-const formatDate = (date: Date): string => {
+const formatDate = (date: Date | string): string => {
+  if (typeof date === 'string') return '';
+
   return `${date.getMonth() + 1}.${date.getDate()}.${date.getFullYear()}.`;
 };
 
@@ -60,6 +63,14 @@ const saveDateStage = (index: number) => {
     interview.value.stages[index].date = formatDate(date);
   }
 };
+
+// тест библиотеки dayjs
+// const saveDateStage = (index: number) => {
+//   if (interview.value?.stages && interview.value.stages.length) {
+//     const date = interview.value.stages[index].date;
+//     interview.value.stages[index].date = dayjs(date).format('MM.DD.YYYY');
+//   }
+// };
 
 onMounted(async () => await getData());
 </script>

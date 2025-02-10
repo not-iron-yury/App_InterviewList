@@ -15,6 +15,6 @@ export interface IInterview {
 
 export interface IInterviewStage {
   name: string;
-  date: string | Date;
+  date: string;
   descr?: string;
 }
