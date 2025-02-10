@@ -25,13 +25,13 @@ const routs: RouteRecordRaw[] = [
   {
     path: '/list',
     name: 'List',
-    component: () => import('../views/PageTaskList.vue'),
+    component: () => import('../views/PageInterviewList.vue'),
     beforeEnter: checkAuth,
   },
   {
     path: '/list/:id',
     name: 'SingleTask',
-    component: () => import('../views/PageTask.vue'),
+    component: () => import('../views/PageInterview.vue'),
     beforeEnter: checkAuth,
   },
   {

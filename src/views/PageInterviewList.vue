@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { getFirestore, query, collection, orderBy, getDocs, deleteDoc, doc } from 'firebase/firestore';
-import { useUserStore } from './../stores/user';
-import type { IInterview } from './../Interfaces';
+import { useUserStore } from '../stores/user';
+import type { IInterview } from '../Interfaces';
 import { useRouter } from 'vue-router';
 import { useConfirm } from 'primevue/useconfirm';
 
