@@ -2,9 +2,8 @@
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useUserStore } from '../stores/user';
-import { getFirestore, getDoc, doc, updateDoc } from 'firebase/firestore';
-import type { IInterview } from '../Interfaces';
-import dayjs from 'dayjs';
+import { getFirestore, getDoc, doc, updateDoc, Timestamp } from 'firebase/firestore';
+import type { IInterview, IInterviewStage } from '../Interfaces';
 
 const DB = getFirestore();
 const userStore = useUserStore();
@@ -19,7 +18,22 @@ const getData = async (): Promise<void> => {
   try {
     isLoading.value = true;
     const docSnap = await getDoc(docref);
-    interview.value = docSnap.data() as IInterview;
+
+    if (docSnap.exists()) {
+      const data = docSnap.data() as IInterview;
+      if (data.stages?.length) {
+        data.stages = data.stages.map((stage: IInterviewStage) => {
+          if (stage.date && stage.date instanceof Timestamp) {
+            return {
+              ...stage,
+              date: stage.date.toDate(),
+            };
+          }
+          return stage;
+        });
+      }
+      interview.value = data;
+    }
   } catch (err) {
     console.error(err);
   } finally {
@@ -29,8 +43,7 @@ const getData = async (): Promise<void> => {
 
 const addStage = (): void => {
   if (interview.value) {
-    interview.value.stages.push({ name: '', descr: '', date: formatDate(new Date()) });
-    // interview.value.stages.push({ name: '', descr: '', date: dayjs(new Date()).format('MM.DD.YYYY') });
+    interview.value.stages.push({ name: '', descr: '', date: null });
   }
 };
 
@@ -51,24 +64,16 @@ const saveData = async (): Promise<void> => {
   }
 };
 
-const formatDate = (date: Date | string): string => {
-  if (typeof date === 'string') return '';
+// const formatDate = (date: Date | string): string => {
+//   if (typeof date === 'string') return '';
 
-  return `${date.getMonth() + 1}.${date.getDate()}.${date.getFullYear()}.`;
-};
+//   return `${date.getMonth() + 1}.${date.getDate()}.${date.getFullYear()}.`;
+// };
 
-const saveDateStage = (index: number) => {
-  if (interview.value) {
-    const date = interview.value.stages[index].date;
-    interview.value.stages[index].date = formatDate(date);
-  }
-};
-
-// тест библиотеки dayjs
-// const saveDateStage = (index: number) => {
-//   if (interview.value?.stages && interview.value.stages.length) {
+//const saveDateStage = (index: number) => {
+//   if (interview.value) {
 //     const date = interview.value.stages[index].date;
-//     interview.value.stages[index].date = dayjs(date).format('MM.DD.YYYY');
+//     interview.value.stages[index].date = formatDate(date);
 //   }
 // };
 
@@ -129,12 +134,7 @@ onMounted(async () => await getData());
             </label>
             <label class="form-label">
               Дата собеса
-              <app-datepicker
-                class="form-input"
-                dateFormat="dd.mm.yy"
-                v-model="stage.date"
-                @date-select="saveDateStage(indx)"
-              />
+              <app-datepicker class="form-input" dateFormat="dd.mm.yy" v-model="stage.date" />
             </label>
             <label class="form-label">
               Заметки
