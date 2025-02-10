@@ -35,6 +35,7 @@ const addNewInterview = async (): Promise<void> => {
       contactEmail: contactEmail.value,
       contactPhone: contactPhone.value,
       dateCreation: new Date(),
+      stages: [],
     };
 
     if (userId) {

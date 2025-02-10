@@ -3,9 +3,8 @@ import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useUserStore } from '../stores/user';
 import { getFirestore, getDoc, doc, updateDoc } from 'firebase/firestore';
-import type { IInterview, IInterviewStage } from '../Interfaces';
+import type { IInterview } from '../Interfaces';
 
-const result = ref('');
 const DB = getFirestore();
 const userStore = useUserStore();
 const route = useRoute();
@@ -29,16 +28,36 @@ const getData = async (): Promise<void> => {
 
 const addStage = (): void => {
   if (interview.value) {
-    if (!interview.value.stages) {
-      interview.value.stages = [];
-    }
-    interview.value.stages.push({ name: '', descr: '', date: new Date() });
+    interview.value.stages.push({ name: '', descr: '', date: formatDate(new Date()) });
   }
 };
 
 const delStage = (index: number): void => {
   if (interview.value?.stages) {
     interview.value.stages.splice(index, 1);
+  }
+};
+
+const saveData = async (): Promise<void> => {
+  try {
+    isLoading.value = true;
+    await updateDoc(docref, { ...interview.value });
+  } catch (err) {
+    console.error(err);
+  } finally {
+    await getData();
+    isLoading.value = false;
+  }
+};
+
+const formatDate = (date: Date): string => {
+  return `${date.getMonth() + 1}.${date.getDate()}.${date.getFullYear()}.`;
+};
+
+const saveDateStage = (index: number) => {
+  if (interview.value) {
+    const date = interview.value.stages[index].date;
+    interview.value.stages[index].date = formatDate(date);
   }
 };
 
@@ -92,33 +111,38 @@ onMounted(async () => await getData());
         <!-- ЭТАПЫ СОБЕСЕДОВАНИЯ -->
 
         <template v-if="interview.stages">
-          <div class="interview-stage" v-for="(stage, indx) in interview.stages" :key="stage.name">
+          <div class="interview-stage" v-for="(stage, indx) in interview.stages" :key="indx">
             <label class="form-label">
               Этап собеса # {{ indx + 1 }}
-              <app-input-text class="form-input" type="text" placeholder="Лайв кодинг" v-model="stage.descr" />
+              <app-input-text class="form-input" placeholder="Первый этап" v-model="stage.name" />
             </label>
             <label class="form-label">
               Дата собеса
-              <app-datepicker class="form-input" dateFormat="dd.mm.yy" v-model="stage.date" />
+              <app-datepicker
+                class="form-input"
+                dateFormat="dd.mm.yy"
+                v-model="stage.date"
+                @date-select="saveDateStage(indx)"
+              />
             </label>
             <label class="form-label">
               Заметки
-              <app-textarea class="form-input form-textarea" rows="7" type="tel" />
+              <app-textarea class="form-input form-textarea" rows="7" type="tel" v-model="stage.descr" />
             </label>
             <app-button label="Удалить этап" type="button" severity="danger" @click="delStage(indx)" />
-            <div class="flex-row btns">
-              <label class="form-label form-label--col">
-                <app-radio v-model="result" name="result" value="fuckshit" />
-                Пролёт
-              </label>
-              <label class="form-label form-label--col">
-                <app-radio v-model="result" name="result" value="eboy" />
-                Оффер
-              </label>
-              <app-button label="Сохранить" type="button" severity="secondary" />
-            </div>
           </div>
         </template>
+        <div class="flex-row btns">
+          <label class="form-label form-label--col">
+            <app-radio v-model="interview!.result" name="result" value="fuckshit" />
+            Пролёт
+          </label>
+          <label class="form-label form-label--col">
+            <app-radio v-model="interview!.result" name="result" value="eboy" />
+            Оффер
+          </label>
+          <app-button label="Сохранить" type="button" severity="secondary" @click="saveData" />
+        </div>
       </template>
     </app-card>
   </div>

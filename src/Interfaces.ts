@@ -9,11 +9,12 @@ export interface IInterview {
   dateCreation: Date;
   salaryMin?: number;
   salaryMax?: number;
-  stages?: Array<IInterviewStage>;
+  stages: Array<IInterviewStage>;
+  result?: 'eboy' | 'fuckshit';
 }
 
 export interface IInterviewStage {
   name: string;
-  date: Date;
-  descr: string;
+  date: string | Date;
+  descr?: string;
 }
