@@ -61,12 +61,15 @@ const editingInterview = (id: string): void => {
   <div v-else>
     <app-data-table :value="interviews">
       <app-column field="company" header="Компания"></app-column>
-      <app-column field="hrName" header="Имя HR"></app-column>
       <app-column field="vacancyLink" header="Вакансия">
         <template #body="slotProps">
-          <a :href="slotProps.data.vacancyLink" target="_blank">{{ slotProps.data.vacancyLink }}</a>
+          <a :href="slotProps.data.vacancyLink" target="_blank"
+            >link
+            <i class="pi pi-external-link" />
+          </a>
         </template>
       </app-column>
+      <app-column field="hrName" header="Имя HR"></app-column>
       <app-column header="Контакты">
         <template #body="slotProps">
           <div class="contacts">
@@ -88,13 +91,44 @@ const editingInterview = (id: string): void => {
             </a>
             <a
               v-if="slotProps.data.contactPhone"
-              :href="`https://tel:${slotProps.data.contactPhone}`"
+              :href="`tel:${slotProps.data.contactPhone}`"
               target="_blank"
               class="contacts__phone"
             >
               <span class="contacts__icon pi pi-phone"></span>
             </a>
           </div>
+        </template>
+      </app-column>
+      <app-column header="Вилка">
+        <template #body="slotProps">
+          <span v-if="!slotProps.data.salaryMin">нет данных</span>
+          <span v-else>{{ slotProps.data.salaryMin }} - {{ slotProps.data.salaryMax }}</span>
+        </template>
+      </app-column>
+      <app-column header="Этапы">
+        <template #body="slotProps">
+          <span v-if="!slotProps.data.stages">0</span>
+          <div v-else class="interview-stages">
+            <app-badge
+              v-for="(stage, i) in slotProps.data.stages"
+              :key="i"
+              :value="i + 1"
+              rounded
+              v-tooltip.top="stage.name"
+              class="stage-item"
+            />
+          </div>
+        </template>
+      </app-column>
+      <app-column header="Результат">
+        <template #body="slotProps">
+          <span v-if="!slotProps.data.result">нет данных</span>
+          <span v-else>
+            <app-badge :severity="slotProps.data.result === 'eboy' ? 'success' : 'danger'">
+              {{ slotProps.data.result }}
+            </app-badge>
+          </span>
         </template>
       </app-column>
       <app-column>
@@ -134,5 +168,12 @@ const editingInterview = (id: string): void => {
 .buttons {
   display: flex;
   gap: 12px;
+}
+.interview-stages {
+  display: flex;
+  gap: 4px;
+}
+.stage-item {
+  cursor: default;
 }
 </style>

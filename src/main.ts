@@ -12,6 +12,7 @@ import components from './primeComponents.ts';
 import 'primeicons/primeicons.css';
 import ToastService from 'primevue/toastservice';
 import ConfirmationService from 'primevue/confirmationservice';
+import Tooltip from 'primevue/tooltip';
 
 import { initializeApp } from 'firebase/app';
 
@@ -31,6 +32,7 @@ components.forEach(({ name, component }) => {
   app.component(name, component);
 });
 
+app.directive('tooltip', Tooltip);
 app.use(PrimeVue, {
   theme: {
     preset: Aura,

@@ -32,7 +32,7 @@ onMounted(() => {
 .container {
   margin: 0 auto;
   padding: 0 15px;
-  max-width: 1230px; /* 1200px*/
+  max-width: 1290px; /* 1260px*/
   width: 100%;
 }
 .spiner {
