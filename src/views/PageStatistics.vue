@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { getFirestore, query, collection, orderBy, getDocs, deleteDoc, doc, where } from 'firebase/firestore';
+import { getFirestore, query, collection, orderBy, getDocs } from 'firebase/firestore';
 import { useUserStore } from '../stores/user';
 import type { IInterview } from '../Interfaces';
 
@@ -8,7 +8,6 @@ const DB = getFirestore();
 const userId = useUserStore().userId;
 const interviews = ref<IInterview[]>([]);
 const chartData = ref();
-const chartOptions = ref(null);
 
 const getAllInterviews = async <T extends IInterview>(): Promise<T[]> => {
   const endPoint = query(collection(DB, `users/${userId}/interviews`), orderBy('dateCreation', 'asc'));
