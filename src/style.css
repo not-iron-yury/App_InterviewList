@@ -27,7 +27,23 @@ body {
   text-wrap: balance;
   scroll-behavior: smooth;
 }
-
+.title {
+  font-size: 25px;
+  margin-left: 5px;
+  margin-bottom: 12px;
+}
 .p-button {
   width: 100%;
+}
+.flex-row {
+  display: flex;
+  gap: 10px;
+}
+.btns {
+  margin: 15px 0;
+  gap: 25px;
+  align-items: center;
+}
+.btn-small {
+  max-width: 45px;
 }

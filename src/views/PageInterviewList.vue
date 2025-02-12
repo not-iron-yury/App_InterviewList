@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { getFirestore, query, collection, orderBy, getDocs, deleteDoc, doc } from 'firebase/firestore';
+import { getFirestore, query, collection, orderBy, getDocs, deleteDoc, doc, where } from 'firebase/firestore';
 import { useUserStore } from '../stores/user';
 import type { IInterview } from '../Interfaces';
 import { useRouter } from 'vue-router';
@@ -13,9 +13,20 @@ const userId = useUserStore().userId;
 
 const interviews = ref<IInterview[]>([]);
 const isLoading = ref<boolean>(true);
+const resultFilteringType = ref<string>('');
 
-const getAllInterviews = async <T extends IInterview>(): Promise<T[]> => {
-  const endPoint = query(collection(DB, `users/${userId}/interviews`), orderBy('dateCreation', 'asc'));
+const getAllInterviews = async <T extends IInterview>(isFilter?: boolean): Promise<T[]> => {
+  let endPoint;
+
+  if (isFilter) {
+    endPoint = query(
+      collection(DB, `users/${userId}/interviews`),
+      orderBy('dateCreation', 'asc'),
+      where('result', '==', resultFilteringType.value)
+    );
+  } else {
+    endPoint = query(collection(DB, `users/${userId}/interviews`), orderBy('dateCreation', 'asc'));
+  }
   const getData = await getDocs(endPoint);
   return getData.docs.map(doc => doc.data() as T);
 };
@@ -52,6 +63,17 @@ const confirmRemoveInterview = async (id: string): Promise<void> => {
 const editingInterview = (id: string): void => {
   router.push(`/list/${id}`);
 };
+
+const filterResult = async (): Promise<void> => {
+  interviews.value = await getAllInterviews(true);
+  isLoading.value = false;
+};
+
+const resetFilteringType = async (): Promise<void> => {
+  resultFilteringType.value = '';
+  interviews.value = await getAllInterviews();
+  isLoading.value = false;
+};
 </script>
 
 <template>
@@ -59,7 +81,27 @@ const editingInterview = (id: string): void => {
   <app-spiner v-if="isLoading" class="spiner" />
   <app-message v-else-if="!isLoading && !interviews.length" severity="info">Нет добавленных собеседований</app-message>
   <div v-else>
-    <app-data-table :value="interviews">
+    <h1 class="title">Список интревью</h1>
+    <div class="flex-row btns">
+      <label class="form-label form-label--col">
+        <app-radio v-model="resultFilteringType" name="result" value="eboy" @change="filterResult" />
+        eboy
+      </label>
+      <label class="form-label form-label--col">
+        <app-radio v-model="resultFilteringType" name="result" value="fuckshit" @change="filterResult" />
+        fuckshit
+      </label>
+      <app-button
+        class="btn-small"
+        type="button"
+        severity="secondary"
+        @click="resetFilteringType"
+        :disabled="resultFilteringType === '' ? true : false"
+      >
+        <i class="pi pi-refresh"></i>
+      </app-button>
+    </div>
+    <app-data-table :value="interviews" stripedRows>
       <app-column field="company" header="Компания"></app-column>
       <app-column field="vacancyLink" header="Вакансия">
         <template #body="slotProps">

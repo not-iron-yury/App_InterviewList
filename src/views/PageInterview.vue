@@ -195,15 +195,7 @@ onMounted(async () => await getData());
 .form-textarea {
   resize: none;
 }
-.flex-row {
-  display: flex;
-  gap: 10px;
-}
-.btns {
-  margin: 15px 0;
-  gap: 25px;
-  align-items: center;
-}
+
 .spiner {
   display: flex;
   place-items: center;
