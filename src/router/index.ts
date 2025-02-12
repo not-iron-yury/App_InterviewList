@@ -11,6 +11,10 @@ const checkAuth = (to: RouteLocationNormalized, from: RouteLocationNormalized, n
     } else if (!user && !isAuth) {
       isAuth = true;
       next('/auth');
+    } else if (false) {
+      //костыль для vercel
+      to;
+      from;
     }
   });
 };
