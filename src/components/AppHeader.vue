@@ -18,12 +18,6 @@ interface IMenuItem {
 
 const items = ref<IMenuItem[]>([
   {
-    label: 'Добавить',
-    icon: 'pi pi-plus',
-    path: '/',
-    show: computed((): boolean => !!userStore.userId),
-  },
-  {
     label: 'Список задач',
     icon: 'pi pi-list',
     path: '/list',
@@ -33,6 +27,12 @@ const items = ref<IMenuItem[]>([
     label: 'Статистика',
     icon: 'pi pi-chart-pie',
     path: '/stat',
+    show: computed((): boolean => !!userStore.userId),
+  },
+  {
+    label: 'Добавить',
+    icon: 'pi pi-plus',
+    path: '/',
     show: computed((): boolean => !!userStore.userId),
   },
 ]);

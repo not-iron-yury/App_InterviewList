@@ -15,8 +15,8 @@ interface userData {
 }
 
 const userData = reactive<userData>({
-  email: '',
-  password: '',
+  email: 'test@mail.com',
+  password: 'test@mail.com',
 });
 
 const subtitleText = computed<string>(() => {
@@ -45,7 +45,7 @@ const auth = async (): Promise<void> => {
     } else {
       await createUserWithEmailAndPassword(getAuth(), userData.email, userData.password);
     }
-    router.push('/');
+    router.push('/list');
   } catch (error: unknown) {
     if (error instanceof Error) {
       toast.add({ severity: 'error', summary: 'Ошибочка', detail: error.message, life: 4000 });
@@ -57,7 +57,7 @@ const auth = async (): Promise<void> => {
 onMounted(() => {
   onAuthStateChanged(getAuth(), user => {
     if (user) {
-      router.push('/');
+      router.push('/list');
     }
   });
 });
