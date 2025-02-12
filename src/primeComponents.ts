@@ -13,6 +13,7 @@ import Textarea from 'primevue/textarea';
 import DatePicker from 'primevue/datepicker';
 import RadioButton from 'primevue/radiobutton';
 import Badge from 'primevue/badge';
+import Chart from 'primevue/chart';
 
 const components = [
   { name: 'app-button', component: Button },
@@ -30,6 +31,7 @@ const components = [
   { name: 'app-datepicker', component: DatePicker },
   { name: 'app-radio', component: RadioButton },
   { name: 'app-badge', component: Badge },
+  { name: 'app-chart', component: Chart },
 ];
 
 export default components;
